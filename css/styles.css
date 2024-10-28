@@ -167,7 +167,7 @@ main {
     align-items: center;
     justify-content: center;
     background-color: var(--white);
-    padding: 8px 16px;
+    padding: 8px 20px;
     border-radius: 100vw;
     text-wrap: nowrap;
     gap: 5px;
