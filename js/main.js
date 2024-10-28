@@ -105,7 +105,7 @@ const data = [
 
 data.forEach(item => {
     const card = document.createElement("div");
-    card.classList.add("card")
+    card.classList.add("card");
 
     const thumbnail = document.createElement("div");
     thumbnail.classList.add("thumbnail");
@@ -113,7 +113,7 @@ data.forEach(item => {
     const cardThumbnail = document.createElement("img");
     cardThumbnail.classList.add("card-thumbnail");
     cardThumbnail.src = item.image.thumbnail;
-    cardThumbnail.alt = item.name
+    cardThumbnail.alt = item.name;
 
     const cardDetails = document.createElement("div");
     cardDetails.classList.add("card-details");
@@ -131,18 +131,77 @@ data.forEach(item => {
     categoryPrice.textContent = "$" + item.price.toFixed(2);
 
     const cart = document.createElement("div");
-    cart.classList.add("cart")
+    cart.classList.add("cart");
 
+    // Create cart button container to handle both states
+    const cartButtonContainer = document.createElement("div");
+    cartButtonContainer.classList.add("cart-button-container");
+    
+    // Create Add to Cart button
+    const toCartButton = document.createElement("button");
+    toCartButton.classList.add("add-to-cart");
     
     const cartIconPath = "/assets/images/icon-add-to-cart.svg";
     const cartSvgIcon = document.createElement("img");
     cartSvgIcon.classList.add("cart-icon");
     cartSvgIcon.src = `${cartIconPath}`;
     
-    const toCartButton = document.createElement("button");
-    toCartButton.classList.add("add-to-cart");
-    toCartButton.textContent = "Add to Cart"
+    toCartButton.appendChild(cartSvgIcon);
+    toCartButton.appendChild(document.createTextNode("Add to Cart"));
 
+    // Create quantity selector (hidden by default)
+    const quantitySelector = document.createElement("div");
+    quantitySelector.classList.add("quantity-selector");
+    quantitySelector.style.display = "none";
+
+    const minusButton = document.createElement("button");
+    minusButton.textContent = "-";
+    minusButton.classList.add("quantity-btn");
+
+    const quantityDisplay = document.createElement("span");
+    quantityDisplay.textContent = "1";
+    quantityDisplay.classList.add("quantity-display");
+
+    const plusButton = document.createElement("button");
+    plusButton.textContent = "+";
+    plusButton.classList.add("quantity-btn");
+
+    quantitySelector.appendChild(minusButton);
+    quantitySelector.appendChild(quantityDisplay);
+    quantitySelector.appendChild(plusButton);
+
+    // Add hover events
+    cartButtonContainer.addEventListener("mouseenter", () => {
+        toCartButton.style.display = "none";
+        quantitySelector.style.display = "flex";
+    });
+
+    cartButtonContainer.addEventListener("mouseleave", () => {
+        toCartButton.style.display = "none";
+        quantitySelector.style.display = "flex";
+        cardThumbnail.style.border = "2px solid var(--red)"
+    });
+
+    // quantity control functionality
+    let quantity = 1;
+    minusButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (quantity > 1) {
+            quantity--;
+            quantityDisplay.textContent = quantity;
+        }
+    });
+
+    plusButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        quantity++;
+        quantityDisplay.textContent = quantity;
+    });
+
+    // Append everything together
+    cartButtonContainer.appendChild(toCartButton);
+    cartButtonContainer.appendChild(quantitySelector);
+    cart.appendChild(cartButtonContainer);
 
     card.appendChild(thumbnail);
     card.appendChild(cardDetails);
@@ -151,8 +210,9 @@ data.forEach(item => {
     cardDetails.appendChild(foodCategory);
     cardDetails.appendChild(categoryName);
     cardDetails.appendChild(categoryPrice);
-    toCartButton.insertAdjacentElement("afterbegin", cartSvgIcon);
-    cart.appendChild(toCartButton);
+    
     cardContainer.appendChild(card);
 });
+
+
   
